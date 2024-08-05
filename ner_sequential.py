@@ -17,6 +17,9 @@ model_loaded = BertForTokenClassification.from_pretrained(
     label2id=loaded_label2id
 )
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model_loaded.to(device)
+
 tokenizer_loaded = BertTokenizer.from_pretrained(f'{model_location}')
 words = ["credit", "card", "account", "cvv", "license", "phone", "passport", "password", "plate", "routing", "social", "username"]
 
