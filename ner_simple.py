@@ -19,6 +19,9 @@ model_loaded = BertForTokenClassification.from_pretrained(
 
 tokenizer_loaded = BertTokenizer.from_pretrained(f'{model_location}')
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model_loaded.to(device)
+
 # Maximum length of words per chunk
 max_length = 350
 
