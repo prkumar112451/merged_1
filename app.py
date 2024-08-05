@@ -6,7 +6,6 @@ import traceback
 import uvicorn
 from ner_simple import ner_simple
 from ner_sequential import ner_sequential
-from translation import translate_text
 from summarize import summarize_text
 from pydantic import BaseModel
 
@@ -90,21 +89,6 @@ async def named_entity_recognition(request : NERRequest):
         logger.error("Error processing NER request: %s", str(e))
         traceback.print_exc()
         raise HTTPException(status_code=500, detail="Error processing NER request")
-
-
-@app.post('/translation')
-async def translation(request : TranslationRequest):
-    try:
-        sentence = request.Text
-        logger.info(f"Received sentence: {sentence}")
-        if sentence is None:
-            raise HTTPException(status_code=400, detail="No sentence provided")
-        return translate_text(sentence, request.FromLanguageCode, request.ToLanguageCode)
-    except Exception as e:
-        logger.error("Error processing Translation request: %s", str(e))
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail="Error processing Translation request")
-    
 
 @app.post('/summarization')
 async def summarization(request : SummarizeRequest):
