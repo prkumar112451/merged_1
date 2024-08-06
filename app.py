@@ -32,6 +32,7 @@ class TranslationRequest(BaseModel):
 
 class SummarizeRequest(BaseModel):
     Text: str
+    ModelId: Optional[str] = None
 
 def get_gpu_metrics():
     try:
@@ -97,7 +98,7 @@ async def summarization(request : SummarizeRequest):
         logger.info(f"Received sentence: {sentence}")
         if sentence is None:
             raise HTTPException(status_code=400, detail="No sentence provided")
-        return summarize_text(sentence)
+        return summarize_text(sentence, request.ModelId)
     except Exception as e:
         logger.error("Error processing NER request: %s", str(e))
         traceback.print_exc()
